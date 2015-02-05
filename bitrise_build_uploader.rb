@@ -101,8 +101,8 @@ begin
 		'api_token' => options[:api_token]
 		})
 	puts "* raw_resp: #{raw_resp}"
-	unless raw_resp.status == 200
-		raise "Failed to send 'finished' to Bitrise - status: #{raw_resp.status}"
+	unless raw_resp.code == 200
+		raise "Failed to send 'finished' to Bitrise - code: #{raw_resp.code}"
 	end
 	parsed_resp = JSON.parse(raw_resp.body)
 	puts "* parsed_resp: #{parsed_resp}"
