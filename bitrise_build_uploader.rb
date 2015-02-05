@@ -97,6 +97,7 @@ begin
 
 	# - Finish the Artifact creation
 	uri = URI("#{options[:build_url]}/artifacts/#{artifact_id}/finish_upload.json")
+	puts "* uri: #{uri}"
 	raw_resp = Net::HTTP.post_form(uri, {
 		'api_token' => options[:api_token]
 		})
