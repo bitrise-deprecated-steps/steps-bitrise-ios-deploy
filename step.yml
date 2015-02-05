@@ -1,0 +1,53 @@
+name: "Step Template"
+description: |
+  This is a Step template.
+  Contains everything what's required for a valid StepLib Step.
+
+  To create your own Step:
+
+  1. Create a new repository on GitHub
+  2. Copy the files from this repository into your repository
+  3. Commit and push it
+
+  Hurray, you just created your first Step repository!
+  You can now start coding and when you're ready
+  you can submit your Step to the [Open Step Library](http://www.steplib.com/).
+website: http://www.steplib.com/
+fork_url: https://github.com/steplib/step-template
+source:
+  git: https://github.com/steplib/step-template.git
+host_os_tags:
+  - "osx-10.9"
+  - "osx-10.10"
+project_type_tags: []
+type_tags:
+  - "template"
+  - "sample"
+is_requires_admin_user: false
+inputs:
+  - 
+    mapped_to: STEPLIB_FORMATTED_OUTPUT_FILE_PATH
+    title: "Formatted Output File Path"
+    description: |
+      If provided this Step will generate a (markdown)
+      formatted output to this path.
+    is_required: false
+    is_expand: true
+  - 
+    mapped_to: STEP_BITRISE_BUILD_DEPLOY_BUILD_URL
+    title: "Build URL"
+    is_required: true
+    is_expand: true
+    value: "$BITRISE_BUILD_URL"
+  - 
+    mapped_to: STEP_BITRISE_BUILD_DEPLOY_API_TOKEN
+    title: "Build API Token"
+    is_required: true
+    is_expand: true
+    value: "$BITRISE_BUILD_API_TOKEN"
+  - 
+    mapped_to: STEP_BITRISE_BUILD_DEPLOY_IPA_PATH
+    title: "IPA file path"
+    is_required: true
+    is_expand: true
+outputs: []
