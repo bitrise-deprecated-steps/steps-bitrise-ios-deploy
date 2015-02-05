@@ -76,6 +76,9 @@ begin
 		'artifact_type' => 'ios-ipa'
 		})
 	puts "* raw_resp: #{raw_resp}"
+	unless raw_resp.code == '200'
+		raise "Failed to create the Build Artifact on Bitrise - code: #{raw_resp.code}"
+	end
 	parsed_resp = JSON.parse(raw_resp.body)
 	puts "* parsed_resp: #{parsed_resp}"
 	
@@ -102,7 +105,7 @@ begin
 		'api_token' => options[:api_token]
 		})
 	puts "* raw_resp: #{raw_resp}"
-	unless raw_resp.code == 200
+	unless raw_resp.code == '200'
 		raise "Failed to send 'finished' to Bitrise - code: #{raw_resp.code}"
 	end
 	parsed_resp = JSON.parse(raw_resp.body)
