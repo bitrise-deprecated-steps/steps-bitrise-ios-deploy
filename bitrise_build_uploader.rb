@@ -84,9 +84,9 @@ begin
 	end
 
 	upload_url = parsed_resp['upload_url']
-	if upload_url.nil?
-		raise "No upload_url provided for the artifact"
-	end
+	raise "No upload_url provided for the artifact" if upload_url.nil?
+	artifact_id = parsed_resp['id']
+	raise "No artifact_id provided for the artifact" if artifact_id.nil?
 
 	# - Upload the IPA
 	puts "* upload_url: #{upload_url}"
@@ -96,6 +96,19 @@ begin
 	end
 
 	# - Finish the Artifact creation
+	uri = URI("#{options[:build_url]}/artifacts/#{artifact_id}/finish_upload.json")
+	raw_resp = Net::HTTP.post_form(uri, {
+		'api_token' => options[:api_token]
+		})
+	puts "* raw_resp: #{raw_resp}"
+	unless raw_resp.status == 200
+		raise "Failed to send 'finished' to Bitrise - status: #{raw_resp.status}"
+	end
+	parsed_resp = JSON.parse(raw_resp.body)
+	puts "* parsed_resp: #{parsed_resp}"
+	unless parsed_resp['status'] == 'ok'
+		raise "Failed to send 'finished' to Bitrise"
+	end
 
 	# - Success
 	puts_section_to_formatted_output("## Success")
