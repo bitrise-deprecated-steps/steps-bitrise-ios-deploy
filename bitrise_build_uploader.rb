@@ -94,8 +94,8 @@ begin
 	# - Upload the IPA
 	puts "* upload_url: #{upload_url}"
 
-	unless system("curl --fail -T '#{options[:ipa_path]}' -X PUT '#{upload_url}'")
-		raise "Failed to upload the Artifact"
+	unless system("curl --fail --silent -T '#{options[:ipa_path]}' -X PUT '#{upload_url}'")
+		raise "Failed to upload the Artifact file"
 	end
 
 	# - Finish the Artifact creation
