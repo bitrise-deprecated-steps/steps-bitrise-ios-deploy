@@ -1,6 +1,6 @@
-# Bitrise Build Deploy
+# Bitrise iOS App Deploy
 
-Bitrise Build Deployer.
+Bitrise iOS App (.ipa) Deployer
 
 
 ## Test run this Step on your own machine

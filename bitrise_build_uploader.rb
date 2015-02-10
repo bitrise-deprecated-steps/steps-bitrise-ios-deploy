@@ -7,9 +7,9 @@ require 'uri'
 # --- Options
 
 options = {
-	build_url: ENV['STEP_BITRISE_BUILD_DEPLOY_BUILD_URL'],
-	api_token: ENV['STEP_BITRISE_BUILD_DEPLOY_API_TOKEN'],
-	ipa_path: ENV['STEP_BITRISE_BUILD_DEPLOY_IPA_PATH'],
+	build_url: ENV['STEP_BITRISE_IOS_DEPLOY_BUILD_URL'],
+	api_token: ENV['STEP_BITRISE_IOS_DEPLOY_API_TOKEN'],
+	ipa_path: ENV['STEP_BITRISE_IOS_DEPLOY_IPA_PATH'],
 }
 
 puts "Options: #{options}"

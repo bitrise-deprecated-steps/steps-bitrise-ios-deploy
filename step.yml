@@ -1,10 +1,10 @@
-name: "Bitrise Build Deploy"
+name: "Bitrise iOS App Deploy"
 description: |
-  Bitrise Build Deploy
-website: https://github.com/bitrise-io/steps-bitrise-build-deploy
-fork_url: https://github.com/bitrise-io/steps-bitrise-build-deploy
+  Bitrise iOS App (.ipa) Deploy
+website: https://github.com/bitrise-io/steps-bitrise-ios-deploy
+fork_url: https://github.com/bitrise-io/steps-bitrise-ios-deploy
 source:
-  git: https://github.com/bitrise-io/steps-bitrise-build-deploy.git
+  git: https://github.com/bitrise-io/steps-bitrise-ios-deploy.git
 host_os_tags:
   - "osx-10.10"
 project_type_tags: []
@@ -21,19 +21,19 @@ inputs:
     is_required: false
     is_expand: true
   - 
-    mapped_to: STEP_BITRISE_BUILD_DEPLOY_BUILD_URL
+    mapped_to: STEP_BITRISE_IOS_DEPLOY_BUILD_URL
     title: "Build URL"
     is_required: true
     is_expand: true
     value: "$BITRISE_BUILD_URL"
   - 
-    mapped_to: STEP_BITRISE_BUILD_DEPLOY_API_TOKEN
+    mapped_to: STEP_BITRISE_IOS_DEPLOY_API_TOKEN
     title: "Build API Token"
     is_required: true
     is_expand: true
     value: "$BITRISE_BUILD_API_TOKEN"
   - 
-    mapped_to: STEP_BITRISE_BUILD_DEPLOY_IPA_PATH
+    mapped_to: STEP_BITRISE_IOS_DEPLOY_IPA_PATH
     title: "IPA file path"
     is_required: true
     is_expand: true
