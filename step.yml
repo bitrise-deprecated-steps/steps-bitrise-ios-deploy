@@ -22,13 +22,17 @@ inputs:
     is_expand: true
   - 
     mapped_to: STEP_BITRISE_IOS_DEPLOY_BUILD_URL
-    title: "Build URL"
+    title: "Bitrise Build URL"
+    description: |
+      Unique build URL of this build on Bitrise.io
     is_required: true
     is_expand: true
     value: "$BITRISE_BUILD_URL"
   - 
     mapped_to: STEP_BITRISE_IOS_DEPLOY_API_TOKEN
-    title: "Build API Token"
+    title: "Bitrise Build API Token"
+    description: |
+      The build's API Token for the build on Bitrise.io
     is_required: true
     is_expand: true
     value: "$BITRISE_BUILD_API_TOKEN"
