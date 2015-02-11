@@ -1,6 +1,7 @@
 require 'json'
 require 'net/http'
 require 'uri'
+require 'ipa_analyzer'
 
 
 # ----------------------------
@@ -65,10 +66,13 @@ begin
 	raise "No IPA path provided" unless options[:ipa_path]
 	raise "IPA does not exist at the provided path" unless File.exists?(options[:ipa_path])
 
+	CONFIG_artifact_create_url = "#{options[:build_url]}/artifacts.json"
+	CONFIG_artifact_finished_url = "#{options[:build_url]}/artifacts/#{artifact_id}/finish_upload.json"
+
 	# - Create a Build Artifact on Bitrise
 	ipa_file_name = File.basename(options[:ipa_path])
 
-	uri = URI("#{options[:build_url]}/artifacts.json")
+	uri = URI(CONFIG_artifact_create_url)
 	raw_resp = Net::HTTP.post_form(uri, {
 		'api_token' => options[:api_token],
 		'title' => ipa_file_name,
@@ -98,11 +102,45 @@ begin
 		raise "Failed to upload the Artifact file"
 	end
 
+	# - Metadata from IPA
+	puts_section_to_formatted_output("## Analyzing the IPA")
+	parsed_ipa_infos = {
+		mobileprovision: nil,
+		info_plist: nil
+	}
+	ipa_analyzer = IpaAnalyzer::Analyzer.new(options[:ipa_path])
+	begin
+		puts " * Opening the IPA"
+		ipa_analyzer.open!
+
+		if options[:is_collect_provision_info]
+			puts " * Collecting Provisioning Profile information"
+			parsed_ipa_infos[:mobileprovision] = ipa_analyzer.collect_provision_info()
+			raise "Failed to collect Provisioning Profile information" if parsed_ipa_infos[:mobileprovision].nil?
+		end
+		if options[:is_collect_info_plist]
+			puts " * Collecting Info.plist information"
+			parsed_ipa_infos[:info_plist] = ipa_analyzer.collect_info_plist_info()
+			raise "Failed to collect Info.plist information" if parsed_ipa_infos[:info_plist].nil?
+		end
+	rescue => ex
+		puts
+		puts "Failed: #{ex}"
+		puts
+		raise ex
+	ensure
+		puts " * Closing the IPA"
+		ipa_analyzer.close()
+	end
+	puts " (i) Parsed IPA infos:"
+	puts parsed_ipa_infos
+
 	# - Finish the Artifact creation
-	uri = URI("#{options[:build_url]}/artifacts/#{artifact_id}/finish_upload.json")
+	uri = URI(CONFIG_artifact_finished_url)
 	puts "* uri: #{uri}"
 	raw_resp = Net::HTTP.post_form(uri, {
-		'api_token' => options[:api_token]
+		'api_token' => options[:api_token],
+		'ipa_info' => parsed_ipa_infos
 		})
 	puts "* raw_resp: #{raw_resp}"
 	unless raw_resp.code == '200'
