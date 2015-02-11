@@ -67,7 +67,6 @@ begin
 	raise "IPA does not exist at the provided path" unless File.exists?(options[:ipa_path])
 
 	CONFIG_artifact_create_url = "#{options[:build_url]}/artifacts.json"
-	CONFIG_artifact_finished_url = "#{options[:build_url]}/artifacts/#{artifact_id}/finish_upload.json"
 
 	# - Create a Build Artifact on Bitrise
 	ipa_file_name = File.basename(options[:ipa_path])
@@ -94,6 +93,8 @@ begin
 	raise "No upload_url provided for the artifact" if upload_url.nil?
 	artifact_id = parsed_resp['id']
 	raise "No artifact_id provided for the artifact" if artifact_id.nil?
+	
+	CONFIG_artifact_finished_url = "#{options[:build_url]}/artifacts/#{artifact_id}/finish_upload.json"
 
 	# - Upload the IPA
 	puts "* upload_url: #{upload_url}"
