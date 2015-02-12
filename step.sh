@@ -54,8 +54,9 @@ function create_and_activate_keychain {
 
 # a default, open keychain is required for Provisioning Profile analyzer
 keychain_dir_path="${HOME}/bitrise-deploy"
+keychain_password="bitrise_deploy"
 print_and_do_command_exit_on_error mkdir -p "${keychain_dir_path}"
-create_and_activate_keychain "${keychain_dir_path}/bitrise_deploy.keychain"
+create_and_activate_keychain "${keychain_dir_path}/bitrise_deploy.keychain" "${keychain_password}"
 fail_if_cmd_error "Failed to create keychain"
 
 
