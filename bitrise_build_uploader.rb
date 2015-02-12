@@ -156,7 +156,7 @@ begin
 	ipa_info_hsh = {
 		file_size_KB: ipa_file_size,
 		app_info: {
-			app_title: info_plist_content['CFBundleDisplayName'],
+			app_title: info_plist_content['CFBundleName'],
 			bundle_id: info_plist_content['CFBundleIdentifier'],
 			version: info_plist_content['CFBundleShortVersionString'],
 			build_number: info_plist_content['CFBundleVersion'],
