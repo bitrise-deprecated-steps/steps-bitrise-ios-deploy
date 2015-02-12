@@ -180,7 +180,7 @@ begin
 	puts "* uri: #{uri}"
 	raw_resp = Net::HTTP.post_form(uri, {
 		'api_token' => options[:api_token],
-		'artifact_info' => ipa_info_hsh
+		'artifact_info' => JSON.dump(ipa_info_hsh)
 		})
 	puts "* raw_resp: #{raw_resp}"
 	unless raw_resp.code == '200'
