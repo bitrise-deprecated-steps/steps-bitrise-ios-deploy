@@ -148,11 +148,39 @@ begin
 	puts
 	puts "=> Finish the Artifact creation and send IPA information"
 
+	ipa_file_size = File.size(options[:ipa_path])
+	puts " (i) ipa_file_size: #{ipa_file_size}"
+
+	info_plist_content = parsed_ipa_infos[:info_plist][:content]
+	mobileprovision_content = parsed_ipa_infos[:mobileprovision][:content]
+	ipa_info_hsh = {
+		file_size_KB: ipa_file_size,
+		app_info: {
+			app_title: info_plist_content['CFBundleDisplayName'],
+			bundle_id: info_plist_content['CFBundleIdentifier'],
+			version: info_plist_content['CFBundleShortVersionString'],
+			build_number: info_plist_content['CFBundleVersion'],
+			min_OS_version: info_plist_content['MinimumOSVersion'],
+			device_family_list: info_plist_content['UIDeviceFamily'],
+		},
+		provisioning_info: {
+			creation_date: mobileprovision_content['CreationDate'],
+			expire_date: mobileprovision_content['ExpirationDate'],
+			device_UDID_list: mobileprovision_content['ProvisionedDevices'],
+			team_name: mobileprovision_content['TeamName'],
+			profile_name: mobileprovision_content['Name'],
+			provisions_all_devices: mobileprovision_content['ProvisionsAllDevices'],
+		}
+	}
+	puts
+	puts " (i) ipa_info_hsh: #{ipa_info_hsh}"
+	puts
+
 	uri = URI(CONFIG_artifact_finished_url)
 	puts "* uri: #{uri}"
 	raw_resp = Net::HTTP.post_form(uri, {
-		'api_token' => options[:api_token],
-		'ipa_info' => parsed_ipa_infos
+		api_token: options[:api_token],
+		artifact_info: ipa_info_hsh
 		})
 	puts "* raw_resp: #{raw_resp}"
 	unless raw_resp.code == '200'
