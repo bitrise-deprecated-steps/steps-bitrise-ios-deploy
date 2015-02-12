@@ -69,6 +69,9 @@ begin
 	CONFIG_artifact_create_url = "#{options[:build_url]}/artifacts.json"
 
 	# - Analyze the IPA / collect infos from IPA
+	puts
+	puts "=> Analyze the IPA"
+
 	puts_section_to_formatted_output("## Analyzing the IPA")
 	parsed_ipa_infos = {
 		mobileprovision: nil,
@@ -95,10 +98,15 @@ begin
 		puts " * Closing the IPA"
 		ipa_analyzer.close()
 	end
+	puts
 	puts " (i) Parsed IPA infos:"
 	puts parsed_ipa_infos
+	puts
 
 	# - Create a Build Artifact on Bitrise
+	puts
+	puts "=> Create a Build Artifact on Bitrise"
+
 	ipa_file_name = File.basename(options[:ipa_path])
 
 	uri = URI(CONFIG_artifact_create_url)
@@ -127,13 +135,19 @@ begin
 	CONFIG_artifact_finished_url = "#{options[:build_url]}/artifacts/#{artifact_id}/finish_upload.json"
 
 	# - Upload the IPA
+	puts
+	puts "=> Upload the IPA"
+
 	puts "* upload_url: #{upload_url}"
 
 	unless system("curl --fail --silent -T '#{options[:ipa_path]}' -X PUT '#{upload_url}'")
 		raise "Failed to upload the Artifact file"
 	end
 
-	# - Finish the Artifact creation
+	# - Finish the Artifact creation and send IPA information
+	puts
+	puts "=> Finish the Artifact creation and send IPA information"
+
 	uri = URI(CONFIG_artifact_finished_url)
 	puts "* uri: #{uri}"
 	raw_resp = Net::HTTP.post_form(uri, {
