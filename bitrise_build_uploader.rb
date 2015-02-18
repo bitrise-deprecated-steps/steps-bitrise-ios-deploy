@@ -154,7 +154,7 @@ begin
 	info_plist_content = parsed_ipa_infos[:info_plist][:content]
 	mobileprovision_content = parsed_ipa_infos[:mobileprovision][:content]
 	ipa_info_hsh = {
-		file_size_KB: ipa_file_size,
+		file_size_bytes: ipa_file_size,
 		app_info: {
 			app_title: info_plist_content['CFBundleName'],
 			bundle_id: info_plist_content['CFBundleIdentifier'],
