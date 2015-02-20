@@ -195,7 +195,7 @@ begin
 	# - Success
 	puts_section_to_formatted_output("## Success")
 	#
-	puts_section_to_formatted_output("You can find the Artifact on Bitrise, on the [Build's page](#{options[:build_url]})")
+	puts_section_to_formatted_output("You can find the Downloadable App on Bitrise, on the [Build's page](#{options[:build_url]})")
 rescue => ex
 	cleanup_before_error_exit "#{ex}"
 	exit 1

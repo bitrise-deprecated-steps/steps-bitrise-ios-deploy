@@ -1,6 +1,6 @@
 name: "Bitrise iOS App Deploy"
 description: |
-  Bitrise iOS App (.ipa) Deploy
+  Bitrise iOS App (.ipa) Deploy.
 website: https://github.com/bitrise-io/steps-bitrise-ios-deploy
 fork_url: https://github.com/bitrise-io/steps-bitrise-ios-deploy
 source:
