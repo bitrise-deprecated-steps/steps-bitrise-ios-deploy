@@ -11,6 +11,9 @@ options = {
 	build_url: ENV['STEP_BITRISE_IOS_DEPLOY_BUILD_URL'],
 	api_token: ENV['STEP_BITRISE_IOS_DEPLOY_API_TOKEN'],
 	ipa_path: ENV['STEP_BITRISE_IOS_DEPLOY_IPA_PATH'],
+	notify_user_groups: ENV['STEP_BITRISE_IOS_DEPLOY_NOTIFY_USER_GROUPS'],
+	notify_emails: ENV['STEP_BITRISE_IOS_DEPLOY_NOTIFY_EMAILS'],
+	is_enable_public_page: ENV['STEP_BITRISE_IOS_DEPLOY_ENABLE_PUBLIC_PAGE'],
 }
 
 puts "Options: #{options}"
@@ -180,7 +183,10 @@ begin
 	puts "* uri: #{uri}"
 	raw_resp = Net::HTTP.post_form(uri, {
 		'api_token' => options[:api_token],
-		'artifact_info' => JSON.dump(ipa_info_hsh)
+		'artifact_info' => JSON.dump(ipa_info_hsh),
+		'notify_user_groups' => options[:notify_user_groups],
+		'notify_emails' => options[:notify_emails],
+		'is_enable_public_page' => options[:is_enable_public_page]
 		})
 	puts "* raw_resp: #{raw_resp}"
 	unless raw_resp.code == '200'

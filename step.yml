@@ -1,6 +1,12 @@
 name: "Bitrise iOS App Deploy"
 description: |
   Bitrise iOS App (.ipa) Deploy.
+
+  With this Step if your build generates an iOS App (.ipa file)
+  it will be available for download and for install
+  on the build's page and if you enable also on a
+  public (long and random) URL which you can send to others
+  not in your team.
 website: https://github.com/bitrise-io/steps-bitrise-ios-deploy
 fork_url: https://github.com/bitrise-io/steps-bitrise-ios-deploy
 source:
@@ -41,4 +47,53 @@ inputs:
     title: "IPA file path"
     is_required: true
     is_expand: true
+  - 
+    mapped_to: STEP_BITRISE_IOS_DEPLOY_NOTIFY_USER_GROUPS
+    title: "Notify: User Groups"
+    description: |
+      Your App's user groups to notify, comma separated.
+      Possible group names:
+
+      * testers
+      * developers
+      * admins
+      * owner
+      * everyone
+
+      An example to notify your developers and testers:
+
+      `testers, developers`
+
+      If you want to notify everyone in your team just specify `everyone`.
+
+      If you don't want to notify anyone leave this input empty.
+    is_required: false
+    is_expand: false
+    value: "everyone"
+  - 
+    mapped_to: STEP_BITRISE_IOS_DEPLOY_NOTIFY_EMAILS
+    title: "Notify: Emails"
+    description: |
+      Email addresses to notify, comma separated.
+
+      You can specify any email address, the recepients
+      don't have to be in your team.
+    is_required: false
+    is_expand: false
+    value: ""
+  - 
+    mapped_to: STEP_BITRISE_IOS_DEPLOY_ENABLE_PUBLIC_PAGE
+    title: "Enable public page for the App?"
+    description: |
+      If this option is enabled a public install page
+      will be available with a long and random URL which can be shared
+      with others who are not registered on Bitrise.
+
+      **If you disable this option the Notify Emails option will
+      be ignored and the Notify Groups will receive the build's
+      URL instead of the public page's URL!**
+    is_required: true
+    is_expand: false
+    value_options: ["yes", "no"]
+    value: "yes"
 outputs: []
