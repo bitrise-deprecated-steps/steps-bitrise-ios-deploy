@@ -28,36 +28,36 @@ function CLEANUP_ON_ERROR_FN {
 set_error_cleanup_function CLEANUP_ON_ERROR_FN
 
 
-# ------------------------------
-# --- Utils - Keychain
-
-function create_and_activate_keychain {
-	local keychain_path="$1"
-	local keychain_psw="$2"
-
-    # Create the keychain
-    if [ ! -f "${keychain_path}" ] ; then
-    	print_and_do_command_exit_on_error security -v create-keychain -p "${keychain_psw}" "${keychain_path}"
-    fi
-
-    # Unlock keychain
-    print_and_do_command_exit_on_error security -v list-keychains -s "${keychain_path}"
-    print_and_do_command_exit_on_error security -v list-keychains
-    print_and_do_command_exit_on_error security -v unlock-keychain -p "${keychain_psw}" "${keychain_path}"
-    print_and_do_command_exit_on_error security -v set-keychain-settings -lut 72000 "${keychain_path}"
-    print_and_do_command_exit_on_error security -v default-keychain -s "${keychain_path}"
-}
+# # ------------------------------
+# # --- Utils - Keychain
+#
+# function create_and_activate_keychain {
+# 	local keychain_path="$1"
+# 	local keychain_psw="$2"
+#
+#     # Create the keychain
+#     if [ ! -f "${keychain_path}" ] ; then
+#     	print_and_do_command_exit_on_error security -v create-keychain -p "${keychain_psw}" "${keychain_path}"
+#     fi
+#
+#     # Unlock keychain
+#     print_and_do_command_exit_on_error security -v list-keychains -s "${keychain_path}"
+#     print_and_do_command_exit_on_error security -v list-keychains
+#     print_and_do_command_exit_on_error security -v unlock-keychain -p "${keychain_psw}" "${keychain_path}"
+#     print_and_do_command_exit_on_error security -v set-keychain-settings -lut 72000 "${keychain_path}"
+#     print_and_do_command_exit_on_error security -v default-keychain -s "${keychain_path}"
+# }
 
 
 # ------------------------------
 # --- Main
 
-# a default, open keychain is required for Provisioning Profile analyzer
-keychain_dir_path="${HOME}/bitrise-deploy"
-keychain_password="bitrise_deploy"
-print_and_do_command_exit_on_error mkdir -p "${keychain_dir_path}"
-create_and_activate_keychain "${keychain_dir_path}/bitrise_deploy.keychain" "${keychain_password}"
-fail_if_cmd_error "Failed to create keychain"
+# # a default, open keychain is required for Provisioning Profile analyzer
+# keychain_dir_path="${HOME}/bitrise-deploy"
+# keychain_password="bitrise_deploy"
+# print_and_do_command_exit_on_error mkdir -p "${keychain_dir_path}"
+# create_and_activate_keychain "${keychain_dir_path}/bitrise_deploy.keychain" "${keychain_password}"
+# fail_if_cmd_error "Failed to create keychain"
 
 
 print_and_do_command_exit_on_error cd "${THIS_SCRIPT_DIR}"

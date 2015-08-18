@@ -1,4 +1,5 @@
-name: "Bitrise iOS App Deploy"
+title: Bitrise iOS App Deploy
+summary: Bitrise iOS App (.ipa) Deployer.
 description: |
   Bitrise iOS App (.ipa) Deploy.
 
@@ -8,92 +9,88 @@ description: |
   public (long and random) URL which you can send to others
   not in your team.
 website: https://github.com/bitrise-io/steps-bitrise-ios-deploy
-fork_url: https://github.com/bitrise-io/steps-bitrise-ios-deploy
-source:
-  git: https://github.com/bitrise-io/steps-bitrise-ios-deploy.git
+source_code_url: https://github.com/bitrise-io/steps-bitrise-ios-deploy
+support_url: https://github.com/bitrise-io/steps-bitrise-ios-deploy/issues
 host_os_tags:
   - "osx-10.10"
-project_type_tags: []
+project_type_tags:
+  - ios
 type_tags:
   - "deploy"
 is_requires_admin_user: false
+is_always_run: false
+is_skippable: false
 inputs:
-  - 
-    mapped_to: STEPLIB_FORMATTED_OUTPUT_FILE_PATH
-    title: "Formatted Output File Path"
-    description: |
-      If provided this Step will generate a (markdown)
-      formatted output to this path.
-    is_required: false
-    is_expand: true
-  - 
-    mapped_to: STEP_BITRISE_IOS_DEPLOY_BUILD_URL
-    title: "Bitrise Build URL"
-    description: |
-      Unique build URL of this build on Bitrise.io
-    is_required: true
-    is_expand: true
-    value: "$BITRISE_BUILD_URL"
-  - 
-    mapped_to: STEP_BITRISE_IOS_DEPLOY_API_TOKEN
-    title: "Bitrise Build API Token"
-    description: |
-      The build's API Token for the build on Bitrise.io
-    is_required: true
-    is_expand: true
-    value: "$BITRISE_BUILD_API_TOKEN"
-  - 
-    mapped_to: STEP_BITRISE_IOS_DEPLOY_IPA_PATH
-    title: "IPA file path"
-    is_required: true
-    is_expand: true
-  - 
-    mapped_to: STEP_BITRISE_IOS_DEPLOY_NOTIFY_USER_GROUPS
-    title: "Notify: User Groups"
-    description: |
-      Your App's user groups to notify, comma separated.
-      Possible group names:
+  - build_url: "$BITRISE_BUILD_URL"
+    opts:
+      title: "Bitrise Build URL"
+      description: |
+        Unique build URL of this build on Bitrise.io
+      is_required: true
+      is_expand: true
+  - build_api_token: "$BITRISE_BUILD_API_TOKEN"
+    opts:
+      title: "Bitrise Build API Token"
+      description: |
+        The build's API Token for the build on Bitrise.io
+      is_required: true
+      is_expand: true
+  - ipa_path: "$BITRISE_IPA_PATH"
+    opts:
+      title: "IPA file path"
+      is_required: true
+      is_expand: true
+  - notify_user_groups: "everyone"
+    opts:
+      title: "Notify: User Groups"
+      description: |
+        Your App's user groups to notify, comma separated.
+        Possible group names:
 
-      * testers
-      * developers
-      * admins
-      * owner
-      * everyone
+        * none
+        * testers
+        * developers
+        * admins
+        * owner
+        * everyone
 
-      An example to notify your developers and testers:
+        An example to notify your developers and testers:
 
-      `testers, developers`
+        `testers, developers`
 
-      If you want to notify everyone in your team just specify `everyone`.
+        If you want to notify everyone in your team just specify `everyone`.
 
-      If you don't want to notify anyone leave this input empty.
-    is_required: false
-    is_expand: false
-    value: "everyone"
-  - 
-    mapped_to: STEP_BITRISE_IOS_DEPLOY_NOTIFY_EMAILS
-    title: "Notify: Emails"
-    description: |
-      Email addresses to notify, comma separated.
+        If you don't want to notify anyone set this to `none`.
+      is_required: false
+      is_expand: false
+  - notify_email_list:
+    opts:
+      title: "Notify: Emails"
+      description: |
+        Email addresses to notify, comma separated.
 
-      You can specify any email address, the recepients
-      don't have to be in your team.
-    is_required: false
-    is_expand: false
-    value: ""
-  - 
-    mapped_to: STEP_BITRISE_IOS_DEPLOY_ENABLE_PUBLIC_PAGE
-    title: "Enable public page for the App?"
-    description: |
-      If this option is enabled a public install page
-      will be available with a long and random URL which can be shared
-      with others who are not registered on Bitrise.
+        You can specify any email address, the recepients
+        don't have to be in your team.
+      is_required: false
+      is_expand: false
+  - is_enable_public_page: "yes"
+    opts:
+      title: "Enable public page for the App?"
+      description: |
+        If this option is enabled a public install page
+        will be available with a long and random URL which can be shared
+        with others who are not registered on Bitrise.
 
-      **If you disable this option the Notify Emails option will
-      be ignored and the Notify Groups will receive the build's
-      URL instead of the public page's URL!**
-    is_required: true
-    is_expand: false
-    value_options: ["yes", "no"]
-    value: "yes"
-outputs: []
+        **If you disable this option the Notify Emails option will
+        be ignored and the Notify Groups will receive the build's
+        URL instead of the public page's URL!**
+      is_required: true
+      is_expand: false
+      value_options: ["yes", "no"]
+outputs:
+  - BITRISE_PUBLIC_INSTALL_PAGE_URL:
+    opts:
+      title: Public Install Page URL
+      description: |-
+        Public Install Page's URL, if the
+        *Enable public page for the App?* option was *enabled*.

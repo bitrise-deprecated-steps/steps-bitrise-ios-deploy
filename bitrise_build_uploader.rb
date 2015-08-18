@@ -8,12 +8,12 @@ require 'ipa_analyzer'
 # --- Options
 
 options = {
-	build_url: ENV['STEP_BITRISE_IOS_DEPLOY_BUILD_URL'],
-	api_token: ENV['STEP_BITRISE_IOS_DEPLOY_API_TOKEN'],
-	ipa_path: ENV['STEP_BITRISE_IOS_DEPLOY_IPA_PATH'],
-	notify_user_groups: ENV['STEP_BITRISE_IOS_DEPLOY_NOTIFY_USER_GROUPS'],
-	notify_emails: ENV['STEP_BITRISE_IOS_DEPLOY_NOTIFY_EMAILS'],
-	is_enable_public_page: ENV['STEP_BITRISE_IOS_DEPLOY_ENABLE_PUBLIC_PAGE'],
+	build_url: ENV['build_url'],
+	api_token: ENV['build_api_token'],
+	ipa_path: ENV['ipa_path'],
+	notify_user_groups: ENV['notify_user_groups'],
+	notify_emails: ENV['notify_email_list'],
+	is_enable_public_page: ENV['is_enable_public_page'],
 }
 
 puts "Options: #{options}"
@@ -22,7 +22,7 @@ puts "Options: #{options}"
 # ----------------------------
 # --- Formatted Output
 
-$formatted_output_file_path = ENV['STEPLIB_FORMATTED_OUTPUT_FILE_PATH']
+$formatted_output_file_path = ENV['BITRISE_STEP_FORMATTED_OUTPUT_FILE_PATH']
 
 def puts_string_to_formatted_output(text)
 	puts text
@@ -125,7 +125,7 @@ begin
 	end
 	parsed_resp = JSON.parse(raw_resp.body)
 	puts "* parsed_resp: #{parsed_resp}"
-	
+
 	unless parsed_resp['error_msg'].nil?
 		raise "Failed to create the Build Artifact on Bitrise: #{parsed_resp['error_msg']}"
 	end
@@ -181,6 +181,9 @@ begin
 
 	uri = URI(CONFIG_artifact_finished_url)
 	puts "* uri: #{uri}"
+	if options[:notify_user_groups].to_s == "" or options[:notify_user_groups].to_s == "none"
+		options[:notify_user_groups] = ""
+	end
 	raw_resp = Net::HTTP.post_form(uri, {
 		'api_token' => options[:api_token],
 		'artifact_info' => JSON.dump(ipa_info_hsh),
@@ -202,6 +205,19 @@ begin
 	puts_section_to_formatted_output("## Success")
 	#
 	puts_section_to_formatted_output("You can find the Downloadable App on Bitrise, on the [Build's page](#{options[:build_url]})")
+
+	if options[:is_enable_public_page] == 'yes'
+		public_install_page_url = parsed_resp['public_install_page_url']
+		if public_install_page_url.to_s.empty?
+			raise "Public Install Page was enabled, but no Public Install Page URL is available!"
+		else
+			unless system("envman add --key BITRISE_PUBLIC_INSTALL_PAGE_URL --value '#{public_install_page_url}'")
+				raise "Failed to export BITRISE_PUBLIC_INSTALL_PAGE_URL"
+			end
+		end
+	else
+		puts_section_to_formatted_output("Publis Install Page was disabled, no BITRISE_PUBLIC_INSTALL_PAGE_URL is generated.")
+	end
 rescue => ex
 	cleanup_before_error_exit "#{ex}"
 	exit 1
