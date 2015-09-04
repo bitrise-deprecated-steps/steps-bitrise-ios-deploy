@@ -20,6 +20,7 @@ type_tags:
 is_requires_admin_user: false
 is_always_run: false
 is_skippable: false
+run_if: .IsCI
 inputs:
   - build_url: "$BITRISE_BUILD_URL"
     opts:
