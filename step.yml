@@ -1,6 +1,11 @@
 title: Bitrise iOS App Deploy
-summary: Bitrise iOS App (.ipa) Deployer.
-description: |
+summary: |-
+  Use Bitrise to deploy your Application! Notify your testers, developers
+  or if you enable the public page of the App add the email addresses of those
+  who are not on Bitrise but are able to install the Application. After deploy
+  they'll recieve an email with the install link and they can start testing or
+  reviewing the App right away!
+description: |-
   Bitrise iOS App (.ipa) Deploy.
 
   With this Step if your build generates an iOS App (.ipa file)
